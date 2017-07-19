@@ -46,7 +46,7 @@ public class Main {
             int [] tempArray = new int [2];
             tempArray[0] = upperBound;
 
-            while( i < array.length-1 && (lowerBound >= array[i+1][0] || lowerBound+1 == array[i+1][0])){
+            while( i < array.length-1 && lowerBound+1 >= array[i+1][0]){
 
                 if(lowerBound+1 == array[i+1][0]){
                     lowerBound = array[i+1][0];
@@ -55,7 +55,7 @@ public class Main {
                 if(lowerBound < array[i+1][1]){
                     lowerBound = array[i+1][1];
                 }
-                
+
                 i++;
             }
             tempArray[1] = lowerBound;
