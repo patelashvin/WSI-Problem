@@ -1,11 +1,9 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.internal.NotNull;
+import java.util.*;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
 
 
 public class Main {
@@ -39,30 +37,24 @@ public class Main {
 
     @NotNull
     private static String processOutput(int[][] array){
-        StringBuilder str = new StringBuilder();
-        for(int i = 0; i < array.length; i++){
-            int upperBound = array[i][0];
-            int lowerBound = array[i][1];
-            int [] tempArray = new int [2];
-            tempArray[0] = upperBound;
-
-            while( i < array.length-1 && lowerBound+1 >= array[i+1][0]){
-
-                if(lowerBound+1 == array[i+1][0]){
-                    lowerBound = array[i+1][0];
+        Stack<int[]> stack = new Stack();
+        stack.add(array[0]);
+        for(int i = 1; i < array.length; i++) {
+            int[] temp = stack.pop();
+            if (temp[1] >= (array[i][0] - 1)) {
+                if (temp[1] <= array[i][1]) {
+                    temp[1] = array[i][1];
                 }
-
-                if(lowerBound < array[i+1][1]){
-                    lowerBound = array[i+1][1];
-                }
-
-                i++;
+                stack.push(temp);
+            } else {
+                stack.push(temp);
+                stack.push(array[i]);
             }
-            tempArray[1] = lowerBound;
-            str.append(Arrays.toString(tempArray));
-            str.append(" ");
         }
-        String output = str.toString().replace(", ", ",");
-        return output.substring(0,output.length()-1);
+        String str = Arrays.deepToString(stack.toArray()).replace(", ", ",");
+        str = str.replace("],[", "] [");
+        int indexOfOpenBracket = str.indexOf("[");
+        int indexOfLastBracket = str.lastIndexOf("]");
+        return str.substring(indexOfOpenBracket+1, indexOfLastBracket);
     }
 }
