@@ -71,6 +71,19 @@ public class MainTest {
     }
 
     @Test
+    public void testDeeplyOverlappingRageToSingle2() throws IOException {
+        ByteArrayOutputStream myOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(myOut));
+        ByteArrayInputStream myIn = new ByteArrayInputStream("[94136,94138] [94131,94134] [94141,94143] [94133,94136] [94139,94142] [94144,94149]".getBytes());
+        System.setIn(myIn);
+        Main.main(null);
+        String standardOutput = myOut.toString();
+        System.out.println(standardOutput);
+        Assert.assertEquals("[94131,94149]\n", standardOutput);
+        System.setIn(System.in);
+    }
+
+    @Test
     public void testSingleRange() throws IOException {
         ByteArrayOutputStream myOut = new ByteArrayOutputStream();
         System.setOut(new PrintStream(myOut));
