@@ -1,7 +1,7 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import com.sun.istack.internal.NotNull;
+
 import java.util.*;
 
 
@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String args[]) {
         try {
-            // Getting input String from user
+            //Getting input String from user
             Scanner scan = new Scanner(System.in);
             String input = scan.nextLine();
             scan.close();
@@ -35,26 +35,22 @@ public class Main {
         return array;
     }
 
-    @NotNull
+
     private static String processOutput(int[][] array){
-        Stack<int[]> stack = new Stack();
-        stack.add(array[0]);
+        StringBuilder str = new StringBuilder(array.length);
+        str.append("[").append(array[0][0]);
+        int temp = array[0][1];
         for(int i = 1; i < array.length; i++) {
-            int[] temp = stack.pop();
-            if (temp[1] >= (array[i][0] - 1)) {
-                if (temp[1] <= array[i][1]) {
-                    temp[1] = array[i][1];
+            if (temp >= (array[i][0] - 1)) {
+                if (temp <= array[i][1]) {
+                    temp = array[i][1];
                 }
-                stack.push(temp);
             } else {
-                stack.push(temp);
-                stack.push(array[i]);
+                str.append(",").append(temp).append("] [").append(array[i][0]);
+                temp = array[i][1];
             }
         }
-        String str = Arrays.deepToString(stack.toArray()).replace(", ", ",");
-        str = str.replace("],[", "] [");
-        int indexOfOpenBracket = str.indexOf("[");
-        int indexOfLastBracket = str.lastIndexOf("]");
-        return str.substring(indexOfOpenBracket+1, indexOfLastBracket);
+        str.append(",").append(temp).append("]");
+        return str.toString();
     }
 }
